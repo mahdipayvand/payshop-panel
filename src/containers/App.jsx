@@ -1,7 +1,16 @@
+import { Main } from "layouts";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 const App = () => (
-  <div className="h-screen grid place-items-center">
-    <h1 className="text-2xl font-medium">پنل مدیریت فروشگاه اینترنتی پای‌شاپ</h1>
-  </div>
+  <Router>
+    <Main>
+      <Routes>
+        <Route path="/" element={<h1>داشبورد</h1>} />
+        <Route path="/product" element={<h1>محصولات</h1>} />
+        <Route path="/user" element={<h1>کاربران</h1>} />
+      </Routes>
+    </Main>
+  </Router>
 );
 
 export default App;

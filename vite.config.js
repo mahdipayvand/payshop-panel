@@ -7,6 +7,8 @@ export default defineConfig({
     alias: {
       styles: "/src/styles",
       containers: "/src/containers",
+      layouts: "/src/layouts",
+      components: "/src/components",
     },
   },
 });
