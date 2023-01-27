@@ -9,6 +9,7 @@ export default defineConfig({
       containers: "/src/containers",
       layouts: "/src/layouts",
       components: "/src/components",
+      pages: "/src/pages",
     },
   },
 });

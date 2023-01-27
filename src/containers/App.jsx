@@ -1,13 +1,14 @@
 import { Main } from "layouts";
+import { Dashboard, Products, Users } from "pages";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const App = () => (
   <Router>
     <Main>
       <Routes>
-        <Route path="/" element={<h1>داشبورد</h1>} />
-        <Route path="/product" element={<h1>محصولات</h1>} />
-        <Route path="/user" element={<h1>کاربران</h1>} />
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/product" element={<Products />} />
+        <Route path="/user" element={<Users />} />
       </Routes>
     </Main>
   </Router>
