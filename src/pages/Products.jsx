@@ -40,7 +40,10 @@ const Products = () => {
           {...register("image", { required: "عکس محصول رو انتخاب نکردی" })}
           className="bg-gray-100 rounded-full h-12 placeholder:text-gray-400 px-5 sr-only"
         />
-        <label htmlFor="image" className="h-12 rounded-full border border-gray-200 grid place-items-center">
+        <label
+          htmlFor="image"
+          className="h-12 rounded-full border border-gray-200 grid place-items-center cursor-pointer"
+        >
           انتخاب عکس محصول
         </label>
         <button className="bg-violet-500 text-white h-12 rounded-full hover:bg-violet-600">ایجاد محصول</button>

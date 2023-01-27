@@ -1,6 +1,6 @@
-import Dashboard from "./Dashboard";
 import Products from "./Products";
 import Users from "./Users";
 import AccessDenied from "./AccessDenied";
+import NotFound from "./NotFound";
 
-export { Dashboard, Products, Users, AccessDenied };
+export { Products, Users, AccessDenied, NotFound };

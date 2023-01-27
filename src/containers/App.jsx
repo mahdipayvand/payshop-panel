@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import store, { persistor } from "store";
 import { ToastContainer } from "react-toastify";
 import { PersistGate } from "redux-persist/integration/react";
-import { Dashboard, Products, Users, AccessDenied } from "pages";
+import { Products, Users, NotFound, AccessDenied } from "pages";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 const App = () => (
@@ -25,10 +25,10 @@ const App = () => (
         />
         <Auth>
           <Routes>
-            <Route path="/" element={<Main />}>
-              <Route index element={<Dashboard />} />
+            <Route element={<Main />}>
               <Route path="/product" element={<Products />} />
               <Route path="/user" element={<Users />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
             <Route path="/access-denied" element={<AccessDenied />} />
           </Routes>

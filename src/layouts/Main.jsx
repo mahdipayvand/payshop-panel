@@ -1,31 +1,32 @@
 import { useEffect } from "react";
 import { MenuItem } from "components";
-import { Outlet } from "react-router-dom";
 import { fetchUsers } from "store/slices/users";
 import { fetchUserProfile } from "store/slices/auth";
 import { fetchProducts } from "store/slices/products";
 import { useDispatch, useSelector } from "react-redux";
-import { RiFunctionLine, RiShoppingBagLine, RiUser3Line, RiLogoutCircleRLine } from "react-icons/ri";
+import { useSearchParams, Outlet } from "react-router-dom";
+import { RiShoppingBagLine, RiUser3Line } from "react-icons/ri";
 
 const menus = [
-  { url: "/", icon: RiFunctionLine, label: "داشبورد" },
   { url: "/product", icon: RiShoppingBagLine, label: "محصولات" },
   { url: "/user", icon: RiUser3Line, label: "کاربران" },
 ];
 
 const Main = () => {
   const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
+  const _token = searchParams.get("token");
   const { token, user } = useSelector((store) => store.auth);
 
   useEffect(() => {
-    dispatch(fetchUserProfile(token));
+    dispatch(fetchUserProfile(_token || token));
     dispatch(fetchProducts());
-    dispatch(fetchUsers(token));
+    dispatch(fetchUsers(_token || token));
   }, []);
 
   return (
     <>
-      <header className="bg-white h-20 shadow-md flex items-center px-4 justify-between">
+      <header className="bg-white h-20 shadow-md flex items-center px-4 justify-between fixed w-full z-10">
         <h1 className="text-xl text-gray-600 font-semibold indent-4">پنل مدیریت پای‌شاپ</h1>
         <a
           target="_blank"
@@ -35,8 +36,8 @@ const Main = () => {
           مشاهده وبسایت
         </a>
       </header>
-      <main className="h-[calc(theme(height.screen)_-_theme(height.20))] grid grid-cols-5">
-        <aside className="bg-gradient-to-b from-violet-400 to-violet-900 h-full col-span-1">
+      <main className="h-[calc(theme(height.screen)_-_theme(height.20))] pt-20 relative">
+        <aside className="bg-gradient-to-b from-violet-400 to-violet-900 h-full w-[250px] fixed">
           <div className="flex flex-col px-10 justify-center items-center text-white gap-y-2 py-8">
             <h2 className="text-lg font-medium">
               {user?.firstName} {user?.lastName}
@@ -54,7 +55,7 @@ const Main = () => {
             ))}
           </ul>
         </aside>
-        <section className="col-span-4 p-10">
+        <section className="p-10 pr-[calc(250px_+_theme(padding.10))]">
           <Outlet />
         </section>
       </main>
