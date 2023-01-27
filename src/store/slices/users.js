@@ -17,6 +17,19 @@ export const fetchUsers = createAsyncThunk("users/fetch", async (token, { reject
   }
 });
 
+export const deleteUser = createAsyncThunk("user/delete", async ({ userID, token }, { rejectWithValue }) => {
+  try {
+    const userReq = await fetch(`${import.meta.env.VITE_API_URL}/user/${userID}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return userReq.status === 200 ? userID : rejectWithValue("مشکلی پیش اومد");
+  } catch (_) {
+    return rejectWithValue("مشکلی پیش اومد");
+  }
+});
+
 const usersSlice = createSlice({
   name: "users",
   initialState: [],
@@ -26,12 +39,18 @@ const usersSlice = createSlice({
 
       state.push(...action.payload);
     });
-    builder.addCase(fetchUsers.rejected, (state, action) => {
-      if (action.payload === 404) {
-        state = [];
-      } else {
-        toast.error(`${action.payload}!`);
-      }
+    builder.addCase(fetchUsers.rejected, (_, action) => {
+      toast.error(`${action.payload}!`);
+    });
+    builder.addCase(deleteUser.fulfilled, (state, action) => {
+      const users = state.filter((user) => user.id !== action.payload);
+
+      state.length = 0;
+
+      state.push(...users);
+    });
+    builder.addCase(deleteUser.rejected, (_, action) => {
+      toast.error(`${action.payload}!`);
     });
   },
 });

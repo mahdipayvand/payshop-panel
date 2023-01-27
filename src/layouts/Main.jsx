@@ -5,7 +5,7 @@ import { fetchUsers } from "store/slices/users";
 import { fetchUserProfile } from "store/slices/auth";
 import { fetchProducts } from "store/slices/products";
 import { useDispatch, useSelector } from "react-redux";
-import { RiFunctionLine, RiShoppingBagLine, RiUser3Line } from "react-icons/ri";
+import { RiFunctionLine, RiShoppingBagLine, RiUser3Line, RiLogoutCircleRLine } from "react-icons/ri";
 
 const menus = [
   { url: "/", icon: RiFunctionLine, label: "داشبورد" },

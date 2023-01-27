@@ -14,6 +14,19 @@ export const fetchProducts = createAsyncThunk("products/fetch", async (_, { reje
   }
 });
 
+export const deleteProduct = createAsyncThunk("product/delete", async ({ productID, token }, { rejectWithValue }) => {
+  try {
+    const productReq = await fetch(`${import.meta.env.VITE_API_URL}/product/${productID}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return productReq.status === 200 ? productID : rejectWithValue("مشکلی پیش اومد");
+  } catch (_) {
+    return rejectWithValue("مشکلی پیش اومد");
+  }
+});
+
 const productsSlice = createSlice({
   name: "products",
   initialState: [],
@@ -25,10 +38,20 @@ const productsSlice = createSlice({
     });
     builder.addCase(fetchProducts.rejected, (state, action) => {
       if (action.payload === 404) {
-        state = [];
+        state.length = 0;
       } else {
         toast.error(`${action.payload}!`);
       }
+    });
+    builder.addCase(deleteProduct.fulfilled, (state, action) => {
+      const products = state.filter((product) => product.id !== action.payload);
+
+      state.length = 0;
+
+      state.push(...products);
+    });
+    builder.addCase(deleteProduct.rejected, (_, action) => {
+      toast.error(`${action.payload}!`);
     });
   },
 });

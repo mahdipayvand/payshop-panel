@@ -10,6 +10,7 @@ const tailwindConfig = {
       },
     },
   },
+  plugins: [require("@tailwindcss/line-clamp")],
 };
 
 module.exports = tailwindConfig;
