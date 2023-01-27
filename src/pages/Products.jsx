@@ -1,13 +1,62 @@
+import { useForm } from "react-hook-form";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { deleteProduct } from "store/slices/products";
 import { useDispatch, useSelector } from "react-redux";
+import { createProduct, deleteProduct } from "store/slices/products";
 
 const Products = () => {
   const dispatch = useDispatch();
   const { products, auth } = useSelector((store) => store);
+  const { register, handleSubmit, formState, reset } = useForm({ mode: "onChange" });
+
+  const onSubmit = (data) => {
+    dispatch(createProduct({ ...data, token: auth.token }));
+    reset();
+  };
 
   return (
-    <>
+    <div className="flex flex-col gap-y-10">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-4 gap-3 bg-white shadow-md p-3">
+        <input
+          type="text"
+          placeholder="نام محصول"
+          {...register("title", { required: "نام محصول رو وارد نکردی" })}
+          className="bg-gray-100 rounded-full h-12 placeholder:text-gray-400 px-5 col-span-3"
+        />
+        <input
+          type="number"
+          placeholder="قیمت محصول"
+          {...register("price", { required: "قیمت محصول رو وارد نکردی" })}
+          className="bg-gray-100 rounded-full h-12 placeholder:text-gray-400 px-5"
+        />
+        <textarea
+          placeholder="توضیحات محصول"
+          {...register("description")}
+          className="bg-gray-100 rounded-2xl h-12 placeholder:text-gray-400 px-5 col-span-full py-4 min-h-[150px]"
+        />
+        <input
+          id="image"
+          type="file"
+          accept="image/*"
+          {...register("image", { required: "عکس محصول رو انتخاب نکردی" })}
+          className="bg-gray-100 rounded-full h-12 placeholder:text-gray-400 px-5 sr-only"
+        />
+        <label htmlFor="image" className="h-12 rounded-full border border-gray-200 grid place-items-center">
+          انتخاب عکس محصول
+        </label>
+        <button className="bg-violet-500 text-white h-12 rounded-full hover:bg-violet-600">ایجاد محصول</button>
+        {formState?.errors?.title && (
+          <p className="text-red-500 text-xs col-span-full">{formState?.errors?.title?.message}</p>
+        )}
+        {formState?.errors?.price && (
+          <p className="text-red-500 text-xs col-span-full">{formState?.errors?.price?.message}</p>
+        )}
+        {formState?.errors?.description && (
+          <p className="text-red-500 text-xs col-span-full">{formState?.errors?.description?.message}</p>
+        )}
+        {formState?.errors?.image && (
+          <p className="text-red-500 text-xs col-span-full">{formState?.errors?.image?.message}</p>
+        )}
+      </form>
       <div className="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow">
         <table className="min-w-full">
           <thead>
@@ -50,7 +99,7 @@ const Products = () => {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 };
 

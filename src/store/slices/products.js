@@ -27,6 +27,35 @@ export const deleteProduct = createAsyncThunk("product/delete", async ({ product
   }
 });
 
+export const createProduct = createAsyncThunk(
+  "product/create",
+  async ({ title, price, description, image, token }, { rejectWithValue }) => {
+    const formData = new FormData();
+
+    formData.append("title", title);
+    formData.append("price", price);
+    formData.append("description", description);
+    formData.append("image", image[0]);
+
+    try {
+      const productReq = await fetch(`${import.meta.env.VITE_API_URL}/product`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+
+      const productRes = await productReq.json();
+
+      if (productReq.status === 400) return rejectWithValue("نام یا قیمت محصول رو وارد نکردی");
+      if (productReq.status === 500) return rejectWithValue("مشکلی پیش اومد");
+
+      return productRes.data;
+    } catch (_) {
+      return rejectWithValue("مشکلی پیش اومد");
+    }
+  },
+);
+
 const productsSlice = createSlice({
   name: "products",
   initialState: [],
@@ -51,6 +80,12 @@ const productsSlice = createSlice({
       state.push(...products);
     });
     builder.addCase(deleteProduct.rejected, (_, action) => {
+      toast.error(`${action.payload}!`);
+    });
+    builder.addCase(createProduct.fulfilled, (state, action) => {
+      state.push(action.payload);
+    });
+    builder.addCase(createProduct.rejected, (_, action) => {
       toast.error(`${action.payload}!`);
     });
   },

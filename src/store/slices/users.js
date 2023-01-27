@@ -30,6 +30,28 @@ export const deleteUser = createAsyncThunk("user/delete", async ({ userID, token
   }
 });
 
+export const createUser = createAsyncThunk(
+  "user/create",
+  async ({ firstName, lastName, email, password, token }, { rejectWithValue }) => {
+    const user = { firstName, lastName, email, password };
+
+    try {
+      const userReq = await fetch(`${import.meta.env.VITE_API_URL}/user`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify(user),
+      });
+
+      if (userReq.status === 400) return rejectWithValue("نام، نام خانوادگی، ایمیل یا رمز عبور رو وارد نکردی");
+      if (userReq.status === 409) return rejectWithValue("کاربری با این ایمیل وجود داره");
+
+      return user;
+    } catch (_) {
+      return rejectWithValue("مشکلی پیش اومد");
+    }
+  },
+);
+
 const usersSlice = createSlice({
   name: "users",
   initialState: [],
@@ -50,6 +72,12 @@ const usersSlice = createSlice({
       state.push(...users);
     });
     builder.addCase(deleteUser.rejected, (_, action) => {
+      toast.error(`${action.payload}!`);
+    });
+    builder.addCase(createUser.fulfilled, (state, action) => {
+      state.push(action.payload);
+    });
+    builder.addCase(createUser.rejected, (_, action) => {
       toast.error(`${action.payload}!`);
     });
   },
