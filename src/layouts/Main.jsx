@@ -1,13 +1,15 @@
 import { useEffect } from "react";
 import { MenuItem } from "components";
 import { fetchUsers } from "store/slices/users";
+import { fetchSlides } from "store/slices/slides";
 import { fetchUserProfile } from "store/slices/auth";
 import { fetchProducts } from "store/slices/products";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams, Outlet } from "react-router-dom";
-import { RiShoppingBagLine, RiUser3Line } from "react-icons/ri";
+import { RiImageLine, RiShoppingBagLine, RiUser3Line } from "react-icons/ri";
 
 const menus = [
+  { url: "/slider", icon: RiImageLine, label: "اسلایدر" },
   { url: "/product", icon: RiShoppingBagLine, label: "محصولات" },
   { url: "/user", icon: RiUser3Line, label: "کاربران" },
 ];
@@ -20,6 +22,7 @@ const Main = () => {
 
   useEffect(() => {
     dispatch(fetchUserProfile(_token || token));
+    dispatch(fetchSlides());
     dispatch(fetchProducts());
     dispatch(fetchUsers(_token || token));
   }, []);
