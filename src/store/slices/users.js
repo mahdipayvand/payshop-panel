@@ -75,7 +75,7 @@ const usersSlice = createSlice({
       toast.error(`${action.payload}!`);
     });
     builder.addCase(createUser.fulfilled, (state, action) => {
-      state.push(action.payload);
+      state.unshift(action.payload);
     });
     builder.addCase(createUser.rejected, (_, action) => {
       toast.error(`${action.payload}!`);

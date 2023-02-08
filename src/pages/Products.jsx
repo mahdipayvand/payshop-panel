@@ -15,7 +15,7 @@ const Products = () => {
 
   return (
     <div className="flex flex-col gap-y-10">
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-4 gap-3 bg-white shadow-md p-3">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-5 gap-3 bg-white shadow-md p-3">
         <input
           type="text"
           placeholder="نام محصول"
@@ -26,6 +26,12 @@ const Products = () => {
           type="number"
           placeholder="قیمت محصول"
           {...register("price", { required: "قیمت محصول رو وارد نکردی" })}
+          className="bg-gray-100 rounded-full h-12 placeholder:text-gray-400 px-5"
+        />
+        <input
+          type="number"
+          {...register("discount")}
+          placeholder="تخفیف محصول"
           className="bg-gray-100 rounded-full h-12 placeholder:text-gray-400 px-5"
         />
         <textarea

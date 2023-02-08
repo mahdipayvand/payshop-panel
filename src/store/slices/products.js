@@ -29,11 +29,12 @@ export const deleteProduct = createAsyncThunk("product/delete", async ({ product
 
 export const createProduct = createAsyncThunk(
   "product/create",
-  async ({ title, price, description, image, token }, { rejectWithValue }) => {
+  async ({ title, price, discount, description, image, token }, { rejectWithValue }) => {
     const formData = new FormData();
 
     formData.append("title", title);
     formData.append("price", price);
+    formData.append("discount", discount);
     formData.append("description", description);
     formData.append("image", image[0]);
 
@@ -83,7 +84,7 @@ const productsSlice = createSlice({
       toast.error(`${action.payload}!`);
     });
     builder.addCase(createProduct.fulfilled, (state, action) => {
-      state.push(action.payload);
+      state.unshift(action.payload);
     });
     builder.addCase(createProduct.rejected, (_, action) => {
       toast.error(`${action.payload}!`);

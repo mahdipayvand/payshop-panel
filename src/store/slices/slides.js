@@ -76,7 +76,7 @@ const slidesSlice = createSlice({
       toast.error(`${action.payload}!`);
     });
     builder.addCase(createSlide.fulfilled, (state, action) => {
-      state.push(action.payload);
+      state.unshift(action.payload);
     });
     builder.addCase(createSlide.rejected, (_, action) => {
       toast.error(`${action.payload}!`);
